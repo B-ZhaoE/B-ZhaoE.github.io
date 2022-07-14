@@ -18,3 +18,7 @@ $ hexo deploy
 1创建hexo:https://zhuanlan.zhihu.com/p/504385429
 
 2hexo源码保存:https://wenku.baidu.com/view/b87738376f175f0e7cd184254b35eefdc9d31571.html
+
+3主题使用https://blog.csdn.net/lynnbest/article/details/79845944
+
+# welcome to contact: zb527527134@gmail.com #
