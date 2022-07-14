@@ -15,6 +15,6 @@ $ hexo deploy
 
 ### hexo教程
 
-创建hexo:https://zhuanlan.zhihu.com/p/504385429
+1创建hexo:https://zhuanlan.zhihu.com/p/504385429
 
-hexo源码保存:https://wenku.baidu.com/view/b87738376f175f0e7cd184254b35eefdc9d31571.html
+2hexo源码保存:https://wenku.baidu.com/view/b87738376f175f0e7cd184254b35eefdc9d31571.html
